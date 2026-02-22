@@ -27,13 +27,14 @@ def no_two_sentences_start_with_same_word(text):
         first_word = sent[0].text.lower()
         starter_dict[first_word].append(sent.text)
 
-    for starter in starter_dict:
-        if len(starter_dict[starter]) > 1:
-            print(f"Sentences starting with '{starter}':")
-            for sentence in starter_dict[starter]:
-                print(f" - {sentence}")
-            print()
-        
+    repeated_starters = {}
+
+    for starter, sentences in starter_dict.items():
+        if len(sentences) > 1:
+            repeated_starters[starter] = sentences
+    
+    return repeated_starters
+
 def repetitive_words(text):
     doc = nlp(text)
     repetitive = set()
@@ -58,9 +59,10 @@ def repetitive_words(text):
 
     return repetitive
 
-if __name__ == "__main__":
-    text = "the ball was thrown by Maggie. Maggie caught it. Is this passive? Passive was done by this. Passive voice is bad. This is a sentence. This is another sentence."
-    print(detect_passive(text))
-    no_two_sentences_start_with_same_word(text)
-    repetitive_words(text)
-    print(repetitive_words(text))
+def analyze(text):
+    feedback = {}
+    feedback["passive_sentences"] = detect_passive(text)
+    feedback["repeated_starters"] = no_two_sentences_start_with_same_word(text)
+    feedback["repetitive_words"] = repetitive_words(text)
+    return feedback
+
