@@ -1,5 +1,6 @@
 #TODO
-#next step = morphlogy based detection (word form)
+#split into different .py files
+#organize response into nicer ui
 import spacy
 from collections import defaultdict
 from collections import Counter
