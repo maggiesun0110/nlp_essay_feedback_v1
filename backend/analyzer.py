@@ -9,12 +9,27 @@ def detect_passive(text):
     doc = nlp(text)
     passive_sentences = []
 
-    for token in doc:
-        #not auxpass bc each passive guaranteed to have nsubjpass but auxpass is just the helper verb (not structural)
-        if token.dep_ == "nsubjpass":
-            #each token alr knows which sentence it belongs to so js token.sent
-            #.text converts back into str
-            passive_sentences.append(token.sent.text)
+    for sent in doc.sents:
+        is_passive = False
+
+        for token in sent:
+            #case 1: dependency-based detection
+            #not auxpass bc each passive guaranteed to have nsubjpass but auxpass is just the helper verb (not structural)
+            if "pass" in token.dep:
+                #each token alr knows which sentence it belongs to so js token.sent
+                #.text converts back into str
+                is_passive = True
+                break
+            #case 2: morphology-based detection (be/get + vbn (verb past participle))
+            if token.tag_ == "VBN":
+                for child in token.children:
+                    #.lemma gives base form of word (is = be)
+                    if child.lemma_ in{"be", "get"}:
+                        is_passive = True
+                        break
+        
+        if is_passive:
+            passive_sentences.append(sent.text)
 
     return passive_sentences
 
