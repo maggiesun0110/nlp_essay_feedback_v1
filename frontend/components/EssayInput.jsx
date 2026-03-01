@@ -23,7 +23,7 @@ function EssayInput({ setResult }){
     };
 
     return (
-        <div>
+        <div id = "essay-input"> 
             {/* the (e) reps an event object that contains e.target (html element that triggered event) and e.target.value which is whats inside the element*/}
             {/* so if i press "a", browser creates object with target: <textarea> and target.value: "A" and 
             React calls setText("A"), stores "A", reruns component and now value = {text} = A */}

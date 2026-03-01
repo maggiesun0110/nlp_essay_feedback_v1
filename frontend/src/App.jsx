@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import EssayInput from "../components/EssayInput";
 import Results from "../components/Results";
+import Header from "../components/Header";
 
 function App(){
   //prop for Results component since children cannot update parent state
@@ -10,6 +11,7 @@ function App(){
 
   return (
     <div>
+      <Header/>
       <EssayInput setResult = {setResult}/>
       <Results result = {result}/>
     </div>

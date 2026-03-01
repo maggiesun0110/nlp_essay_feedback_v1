@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #1a1a1a;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -18,6 +18,7 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -25,6 +26,8 @@ a:hover {
 body {
   margin: 0;
   display: flex;
+  justify-content:space-around;
+  align-items: center;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
@@ -42,16 +45,43 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #504f4f;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #c9cad9;
+  background-color: #6a6969;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+#essay-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+#essay-input textarea {
+  width: 100%;
+  max-width: 600px;
+  height: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #2d2d2d;
+  transition: border-color 0.25s, background-color 0.25s;
+}
+
+#essay-input textarea:focus {
+  outline: none;
+  border-color: #b1b1b1;
+  background-color: #3a3a3a;
 }
 
 @media (prefers-color-scheme: light) {
