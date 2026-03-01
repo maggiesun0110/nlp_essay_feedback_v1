@@ -1,6 +1,10 @@
 #TODO
 #split into different .py files
 #organize response into nicer ui
+#repeated starters needs to be consecutive or within 2
+#is it overlfagging because sometimes it doesn't sound repetiive to humans - make it proportional
+#cluster detection?
+#add nono words or weak words
 import spacy
 from collections import defaultdict
 from collections import Counter
