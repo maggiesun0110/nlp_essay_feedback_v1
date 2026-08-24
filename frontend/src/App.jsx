@@ -1,20 +1,18 @@
 import { useState } from 'react';
-import EssayInput from "../components/EssayInput";
-import Results from "../components/Results";
-import Header from "../components/Header";
+import EssayInput from "./components/EssayInput";
+import Results from "./components/Results";
+import Header from "./components/Header";
+import './App.css';
 
-function App(){
-  //prop for Results component since children cannot update parent state
-  //app passes the setresult to essayinput for it to update and returns the result to app
-  //so app can pass the result down to results for it to display
+function App() {
   const [result, setResult] = useState(null);
 
   return (
-    <div>
+    <main>
       <Header/>
-      <EssayInput setResult = {setResult}/>
-      <Results result = {result}/>
-    </div>
+      <EssayInput setResult={setResult}/>
+      <Results result={result}/>
+    </main>
   );
 }
 

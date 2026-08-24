@@ -1,13 +1,5 @@
-#TODO
-#split into different .py files
-#organize response into nicer ui
-#repeated starters needs to be consecutive or within 2
-#is it overlfagging because sometimes it doesn't sound repetiive to humans - make it proportional
-#cluster detection?
-#add nono words or weak words
 import spacy
-from collections import defaultdict
-from collections import Counter
+from collections import Counter, defaultdict
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -115,7 +107,10 @@ def no_two_sentences_start_with_same_word(doc):
 
     #each sentence is a span object so we can iterate through doc.sents
     for sent in doc.sents:
-        first_word = sent[0].text.lower()
+        words = [token for token in sent if not token.is_punct and not token.is_space]
+        if not words:
+            continue
+        first_word = words[0].text.lower()
         starter_dict[first_word].append(sent.text.strip())
 
     repeated_starters = {}
@@ -150,11 +145,27 @@ def repetitive_words(doc):
     return repetitive
 
 def analyze(text):
-    doc = nlp(text)
-    feedback = {}
-    feedback["passive_sentences"] = detect_passive(doc)
-    feedback["repeated_starters"] = no_two_sentences_start_with_same_word(doc)
-    feedback["repetitive_words"] = repetitive_words(doc)
-    feedback["opening_repetitions"] = detect_structure_rep(doc)
-    return feedback
+    cleaned_text = text.strip()
+    if not cleaned_text:
+        return {
+            "summary": {"sentence_count": 0, "word_count": 0},
+            "passive_sentences": [],
+            "repeated_starters": {},
+            "repetitive_words": [],
+            "opening_repetitions": {"consecutive": [], "overused": []},
+        }
 
+    doc = nlp(cleaned_text)
+    sentences = list(doc.sents)
+    words = [token for token in doc if not token.is_punct and not token.is_space]
+
+    return {
+        "summary": {
+            "sentence_count": len(sentences),
+            "word_count": len(words),
+        },
+        "passive_sentences": detect_passive(doc),
+        "repeated_starters": no_two_sentences_start_with_same_word(doc),
+        "repetitive_words": sorted(repetitive_words(doc)),
+        "opening_repetitions": detect_structure_rep(doc),
+    }

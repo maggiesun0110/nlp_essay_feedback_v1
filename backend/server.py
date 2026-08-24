@@ -1,7 +1,11 @@
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from analyzer import analyze  
+
+try:
+    from .analyzer import analyze
+except ImportError:
+    from analyzer import analyze
 
 app = FastAPI()
 
@@ -16,7 +20,12 @@ app.add_middleware(
 class Essay(BaseModel):
     text: str
 
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
+
+
 @app.post("/analyze")
 def analyze_essay(essay: Essay):
-    result = analyze(essay.text)
-    return result
+    return analyze(essay.text)
