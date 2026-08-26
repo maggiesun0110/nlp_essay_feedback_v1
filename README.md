@@ -1,8 +1,8 @@
 # Essay Feedback Tool
 
-An exploratory natural-language processing application that identifies writing patterns which may be useful during revision. The tool analyzes passive-voice constructions, repeated sentence starters, repeated nearby words, and similar sentence-opening structures.
+An exploratory NLP application that identifies writing patterns which may be useful during essay revision, such as passive-voice constructions, repeated sentence starters, repeated nearby words, and similar sentence-opening structures.
 
-The project combines a spaCy-based Python analysis service with a React interface. It is intended as a transparent, rule-based feedback tool—not as an automated grader or a replacement for human review.
+The project combines a spaCy-based Python analysis service with a React interface to create a transparent, rule-based feedback tool.
 
 ## Features
 
@@ -105,4 +105,5 @@ The tool reports the repeated starter “this” and identifies the likely passi
 - Python, FastAPI, spaCy
 - JavaScript, React, Vite
 - pytest and ESLint
+
 
