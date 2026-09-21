@@ -7,17 +7,30 @@ function FeedbackSection({ title, emptyMessage, children, isEmpty }) {
   );
 }
 
+const openingCategoryLabels = {
+  subordinatingStart: "Subordinating clause",
+  pronounStart: "Pronoun",
+  nounPhraseStart: "Noun phrase",
+  adverbStart: "Adverb",
+  bareNounStart: "Bare noun",
+  otherStart: "Other",
+};
+
+function formatOpeningCategory(category) {
+  return openingCategoryLabels[category] ?? category;
+}
+
 function Results({ result }) {
   if (!result) return null;
 
   const repeatedStarters = Object.entries(result.repeated_starters);
   const openingRepetitions = result.opening_repetitions.consecutive;
+  const overusedOpenings = result.opening_repetitions.overused;
 
   return (
     <section className="results" aria-live="polite">
       <div className="results-heading">
         <div>
-          <p className="eyebrow">Analysis</p>
           <h2>Draft overview</h2>
         </div>
         <p>{result.summary.word_count} words · {result.summary.sentence_count} sentences</p>
@@ -57,22 +70,36 @@ function Results({ result }) {
 
         <FeedbackSection
           title="Similar opening structures"
-          emptyMessage="No consecutive opening structures matched."
-          isEmpty={openingRepetitions.length === 0}
+          emptyMessage="No repeated opening structures were detected."
+          isEmpty={openingRepetitions.length === 0 && overusedOpenings.length === 0}
         >
-          <ul>
-            {openingRepetitions.map((finding, index) => (
-              <li key={`${finding.category}-${index}`}>
-                <strong>{finding.category}:</strong> {finding.previous_sentence} / {finding.sentence}
-              </li>
-            ))}
-          </ul>
+          {openingRepetitions.length > 0 && (
+            <div className="finding">
+              <strong>Consecutive matches</strong>
+              <ul>
+                {openingRepetitions.map((finding, index) => (
+                  <li key={`${finding.category}-${index}`}>
+                    <strong>{formatOpeningCategory(finding.category)}:</strong>{" "}
+                    {finding.previous_sentence} / {finding.sentence}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {overusedOpenings.map((finding) => (
+            <div key={finding.category} className="finding">
+              <strong>
+                {formatOpeningCategory(finding.category)} used {finding.frequency} times
+              </strong>
+              <ul>
+                {finding.sentences.map((sentence) => <li key={sentence}>{sentence}</li>)}
+              </ul>
+            </div>
+          ))}
         </FeedbackSection>
       </div>
 
-      <p className="disclaimer">
-        Automated feedback can be incomplete or incorrect. Use it as a revision prompt.
-      </p>
     </section>
   );
 }

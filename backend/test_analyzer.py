@@ -23,3 +23,23 @@ def test_passive_voice_detection():
     assert result["passive_sentences"] == [
         "The final report was reviewed by the committee."
     ]
+
+
+def test_repeated_nearby_content_words_are_normalized_and_sorted():
+    result = analyze("Writers revise drafts. A writer improved the draft.")
+
+    assert result["repetitive_words"] == ["draft", "writer"]
+
+
+def test_repeated_opening_structures_include_consecutive_and_overused_results():
+    result = analyze("The cat slept. The dog barked. The bird sang.")
+    openings = result["opening_repetitions"]
+
+    assert len(openings["consecutive"]) == 2
+    assert openings["overused"] == [
+        {
+            "category": "nounPhraseStart",
+            "frequency": 3,
+            "sentences": ["The cat slept.", "The dog barked.", "The bird sang."],
+        }
+    ]
